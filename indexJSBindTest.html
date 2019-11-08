@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8" />
+    <head><title></title>
+        <script src="./react.development.js"></script>
+        <script src="./react-dom.development.js"></script>
+        <script src="./babel.min.js"></script>
+    </head>
+    <body>
+
+        <div id="content">
+            <select name="hello" id="hello">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
+        <script src="./jquery-3.4.1.min.js" >
+            
+        </script>
+        <script type="text/babel">
+            class Bork {
+                instanceProperty = "bork";
+                boundFunction = () => {
+                    return this.instanceProperty;
+                };
+
+                static staticProperty = "babelIsCool";
+                static staticFunction = function () {
+                    return Bork.staticProperty;
+                };
+            }
+
+            let myBork = new Bork;
+
+            console.log(myBork.__proto__.boundFunction);
+            console.log(myBork.boundFunction.call(undefined));
+            console.log(Bork.staticFunction());
+        </script>
+    </body>
+</html>
