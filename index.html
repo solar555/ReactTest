@@ -9,162 +9,102 @@
     <body>
         <div id="root"></div>
 
-        <input type="file" />
-
         <script type="text/babel">
-            class NameForm extends React.Component {
+            function FancyBorder(props) {
+                return (
+                    <div className={'FancyBorder FancyBorder-' + props.color}>
+                        {props.children}    
+                    </div>
+                )
+            }
+
+            // Dialog 1:
+            // function Dialog(props) {
+            //     return (
+            //         <FancyBorder color="blue">
+            //             <h1 className="Dialog-title">{props.title}</h1>
+            //             <p className="Dialog-message">{props.message}</p>
+            //         </FancyBorder>
+            //     )
+            // }
+
+            // Dialog 2:
+            function Dialog(props) {
+                return (
+                    <FancyBorder color="blue">
+                        <h1 className="Dialog-title">{props.title}</h1>
+                        <p className="Dialog-message">{props.message}</p>
+                        {props.children}
+                    </FancyBorder>
+                )
+            }
+
+            class SignUpDialog extends React.Component {
                 constructor(props) {
                     super(props);
-                    this.state = {value: ''};
+                    this.state = {login:''};
 
                     this.handleChange = this.handleChange.bind(this);
-                    this.handleSubmit = this.handleSubmit.bind(this);
+                    this.handleSignUp = this.handleSignUp.bind(this);
                 }
 
-                // handleChange(event) {
-                //     this.setState({value: event.target.value});
-                // }
-
-                handleChange(event) {
-                    this.setState({value: event.target.value.toUpperCase()});
+                handleChange(e) {
+                    this.setState({login: e.target.value});
                 }
 
-                handleSubmit(event) {
-                    alert('submit your name: ' + this.state.value);
-                    event.preventDefault();
+                handleSignUp() {
+                    alert(`Welcom aboard, ${this.state.login}`);
                 }
 
                 render() {
                     return (
-                        <form onSubmit={this.handleSubmit}>
-                            <label>
-                                name:
-                                <input type="text" value={this.state.value} onChange={this.handleChange} />    
-                            </label>    
-                            <input type="submit" value="submit" />
-                        </form>
+                        <Dialog title="Mars Exploration Program"
+                            messge="How should we refer to you?">
+                            <input value={this.state.login}
+                                onChange={this.handleChange} />
+                            <button onClick={this.handleSignUp}>Sign Me Up!</button>
+                        </Dialog>
                     )
                 }
             }
 
-            class EssayForm extends React.Component {
-                constructor(props) {
-                    super(props);
-                    this.state = {
-                        value: 'Please create a DOM element article about yourself.'
-                    };
-
-                    this.handleChange = this.handleChange.bind(this);
-                    this.handleSubmit = this.handleSubmit.bind(this);
-                }
-
-                handleChange(event) {
-                    this.setState({value: event.target.value});
-                }
-
-                handleSubmit(event) {
-                    alert('Article for submiting: ' + this.state.value);
-                    event.preventDefault();
-                }
-
-                render() {
-                    return (
-                        <form onSubmit={this.handleSubmit}>
-                            <label>
-                                Article:
-                                <textarea value={this.state.value} onChange={this.handleChange} />    
-                            </label>
-                            <input type="submit" value='submit' />
-                        </form>
-                    )
-                }
+            function WelcomeDialog() {
+                return (
+                    <Dialog
+                        title="Welcome"
+                        message="Thank you for visiting our spacecraft" />
+                )
             }
 
-            class FlavorForm extends React.Component {
-                constructor(props) {
-                    super(props);
-                    this.state = {value: 'coconut'};
-                }
-
-                handleChange(event) {
-                    this.setState({value: event.target.value});
-                }
-
-                handleSubmit(event) {
-                    alert('Your favorate is:' + this.state.value);
-                    event.preventDefault();
-                }
-
-                render() {
-                    return (
-                        <form onSubmit={this.handleSubmit}>
-                          <label>
-                            Choose your favorate:
-                            <select value={this.state.value} onChange={this.handleChange}>
-                                <option value="grapefruit">grapefruit</option>    
-                                <option value="lime">lime</option>
-                                <option value="coconut">coconut</option>
-                                <option value="mango">mango</option>
-                            </select>  
-                          </label>
-                          <input type="submit" value="submit" />
-                        </form>
-                    )
-                }
+            function SplitPane(props) {
+                return (
+                    <div className="SplitPane">
+                        <div className="SplitPane-left">
+                            {props.left}
+                        </div>
+                        <div className="SplitPane-right">
+                            {props.right}
+                        </div>
+                    </div>
+                )
             }
-
-            class Reservation extends React.Component {
-                constructor(props) {
-                    super(props);
-                    this.state = {
-                        isGoing: true,
-                        numberOfGuests: 2
-                    }
-                }
-
-                handleInputChange(event) {
-                    const target = event.target;
-                    const value = target.type === 'checkbox' ? target.checked : target.value;
-                    const name = targe.name;
-
-                    this.setState({
-                        [name]: value
-                    });
-                }
-
-                render() {
-                    return (
-                        <form>
-                            <label>
-                                can yu:
-                                <input type="checkbox" name="isGoing" 
-                                    checked={this.state.isGoing}
-                                    onChange={this.handleInputChange} />    
-                            </label>    
-                            <br />
-                            <label>
-                                guests count:
-                                <input type="number" 
-                                    name="numberOfGuests"
-                                    value={this.state.numberOfGuests}
-                                    onChange={this.handleInputChange} />
-                            </label>
-                        </form>
-                    )
-                }
+            
+            function App() {
+                return (
+                    <SplitPane
+                        left={
+                            <Contacts />
+                        }
+                        right={
+                            <Chat />
+                        } />
+                )
             }
 
             ReactDOM.render(
-                <input value="hi" />,
-                mountNode
+                <App />,
+                document.getElementById('root')
             )
-
-            setTimeout(function() {
-                ReactDOM.render(
-                    <input value={null} />,
-                    mountNode
-                )
-            }, 1000);
         </script>
     </body>
 </html>
